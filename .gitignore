@@ -1,8 +1,8 @@
 # Output directory
 /dist
 
+# Stuff used by the generator tool
+/.gwee
+
 # npm modules
 /node_modules
-
-# Parcel Cache
-/.cache

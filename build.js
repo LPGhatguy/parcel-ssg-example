@@ -1,76 +1,35 @@
-import React from "react";
-import ReactDOMServer from "react-dom/server";
-import { JSDOM } from "jsdom";
-import { readFileSync, writeFileSync } from "fs";
-import { sync as mkdirpSync } from "mkdirp";
-import path from "path";
+const React = require("react");
+const ReactDOMServer = require("react-dom/server");
+const path = require("path");
+const { JSDOM } = require("jsdom");
+const { readFileSync, writeFileSync } = require("fs");
 
-import App from "./src/App";
-import { LinkCallbackContext } from "./src/Link";
+const gwee = require("./gwee");
+gwee.installHooks();
 
-const OUT_DIR = path.join(__dirname, "dist");
-const TEMPLATE = readFileSync("dist/index.html", "utf8");
-const INITIAL_ROUTE = "/";
+const App = require("./src/App").default;
 
-function renderPage(route, linkRenderCallback) {
-	const content = ReactDOMServer.renderToString(
-		<LinkCallbackContext.Provider value={ linkRenderCallback }>
-			<App />
-		</LinkCallbackContext.Provider>
-	);
+(async function main() {
+	await gwee.build({
+		entry: "src/index.html",
+		outDir: "dist",
+		renderPage: (template, route, addRoute) => {
+			const dom = new JSDOM(template);
+			const main = dom.window.document.querySelector("#app");
+			const content = ReactDOMServer.renderToString(React.createElement(App));
+			main.innerHTML = content;
 
-	const dom = new JSDOM(TEMPLATE);
-	const main = dom.window.document.querySelector("#app");
-	main.innerHTML = content;
+			const links = dom.window.document.querySelectorAll("a");
+			for (const link of links) {
+				// Ignore off-site links
+				if (/^\w+:\/\//.test(route)) {
+					continue;
+				}
 
-	return dom.serialize();
-}
+				addRoute(link.href);
+			}
 
-function routeToFilePath(route) {
-	let current = OUT_DIR;
-
-	for (const piece of route.split("/")) {
-		if (piece.length === 0) {
-			continue;
-		}
-
-		current = path.join(current, piece);
-	}
-
-	return path.join(current, "index.html");
-}
-
-function build() {
-	mkdirpSync(OUT_DIR);
-
-	const seenRoutes = new Set();
-	seenRoutes.add(INITIAL_ROUTE);
-
-	const routesToVisit = [INITIAL_ROUTE];
-
-	const linkRenderCallback = route => {
-		if (!seenRoutes.has(route)) {
-			seenRoutes.add(route);
-			routesToVisit.push(route);
-		}
-	};
-
-	while (true) {
-		const route = routesToVisit.pop();
-
-		if (route == null) {
-			break;
-		}
-
-		console.log(`Generating route ${ route }`);
-
-		const rendered = renderPage(route);
-		const out = routeToFilePath(route);
-
-		console.log(`Saving to ${ out }`);
-
-		writeFileSync(out, rendered);
-	}
-}
-
-build();
+			return dom.serialize();
+		},
+	});
+})();
