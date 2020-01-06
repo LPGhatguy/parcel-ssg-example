@@ -1,0 +1,23 @@
+{
+  "name": "try-parcel",
+  "version": "1.0.0",
+  "description": "trying parcel",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "rm -rf dist && parcel build src/index.html && babel-node build.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@babel/node": "^7.7.7",
+    "@babel/preset-react": "^7.7.4",
+    "jsdom": "^15.2.1",
+    "mkdirp": "^0.5.1",
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  }
+}

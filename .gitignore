@@ -1,0 +1,8 @@
+# Output directory
+/dist
+
+# npm modules
+/node_modules
+
+# Parcel Cache
+/.cache
