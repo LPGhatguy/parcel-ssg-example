@@ -3,6 +3,7 @@
 
 # Stuff used by the generator tool
 /.gwee
+/.cache
 
 # npm modules
 /node_modules

@@ -16,6 +16,7 @@
     "node-hook": "^1.0.0",
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^1.4.1",
+    "react-router-dom": "^5.1.2",
     "rimraf": "^3.0.0"
   },
   "dependencies": {
