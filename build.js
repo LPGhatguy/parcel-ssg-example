@@ -1,35 +1,18 @@
-const React = require("react");
-const ReactDOMServer = require("react-dom/server");
-const path = require("path");
-const { JSDOM } = require("jsdom");
-const { readFileSync, writeFileSync } = require("fs");
+const Parcel = require("parcel-bundler");
 
-const gwee = require("./gwee");
-gwee.installHooks();
-
-const App = require("./src/App").default;
+process.env.NODE_ENV = "production";
 
 (async function main() {
-	await gwee.build({
-		entry: "src/index.html",
-		outDir: "dist",
-		renderPage: (template, route, addRoute) => {
-			const dom = new JSDOM(template);
-			const main = dom.window.document.querySelector("#app");
-			const content = ReactDOMServer.renderToString(React.createElement(App));
-			main.innerHTML = content;
-
-			const links = dom.window.document.querySelectorAll("a");
-			for (const link of links) {
-				// Ignore off-site links
-				if (/^\w+:\/\//.test(route)) {
-					continue;
-				}
-
-				addRoute(link.href);
-			}
-
-			return dom.serialize();
-		},
+	const bundler = new Parcel(["ssg.js"], {
+		cacheDir: ".gwee/parcel-cache",
+		outDir: ".gwee/ssg",
+		target: "node",
+		watch: false,
+		minify: true,
+		autoInstall: false,
 	});
+
+	await bundler.bundle();
+
+	require("./.gwee/ssg/ssg.js");
 })();

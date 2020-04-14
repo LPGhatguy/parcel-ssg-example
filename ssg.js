@@ -1,38 +1,45 @@
-const Parcel = require("parcel-bundler");
-const babel = require("@babel/core");
-const hook = require("node-hook");
-const path = require("path");
-const { sync: mkdirpSync } = require("mkdirp");
-const { sync: rimrafSync } = require("rimraf");
-const { readFileSync, writeFileSync } = require("fs");
+import Parcel from "parcel-bundler";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import path from "path";
+import { JSDOM } from "jsdom";
+import { MemoryRouter as Router } from "react-router-dom";
+import { readFileSync, writeFileSync } from "fs";
+import { sync as mkdirpSync } from "mkdirp";
+import { sync as rimrafSync } from "rimraf";
 
-// Install hooks so that Node.js will correctly handle files Gwee cares about:
-// - JS files should be run through Babel
-// - CSS files should be processed as CSS modules
-function installHooks() {
-	// Compile requires with Babel
-	hook.hook(".js", (source, filename) => {
-		// Ignore any file in node_modules
-		if (/[\\\/]node_modules[\\\/]/.test(filename)) {
-			return source;
-		}
+import App from "./src/App";
 
-		const transformed = babel.transformSync(source, {
-			filename,
-		});
+console.log("Starting Gwee build");
 
-		return transformed.code;
+(async function main() {
+	await build({
+		entry: "src/index.html",
+		outDir: "dist",
+		renderPage: (template, route, addRoute) => {
+			const dom = new JSDOM(template);
+			const main = dom.window.document.querySelector("#app");
+			const content = ReactDOMServer.renderToString(
+				<Router>
+					<App />
+				</Router>
+			);
+			main.innerHTML = content;
+
+			const links = dom.window.document.querySelectorAll("a");
+			for (const link of links) {
+				// Ignore off-site links
+				if (/^\w+:\/\//.test(route)) {
+					continue;
+				}
+
+				addRoute(link.href);
+			}
+
+			return dom.serialize();
+		},
 	});
-
-	// Transform CSS files into objects containing CSS classes
-	hook.hook(".css", (source, filename) => {
-		const name = path.basename(filename, ".css");
-		const jsonPath = `.gwee/css-modules/${ name }.json`;
-		const newContent = readFileSync(jsonPath);
-
-		return `module.exports = ${ newContent };`;
-	});
-}
+})();
 
 async function build({ entry, outDir, renderPage }) {
 	rimrafSync(outDir);
@@ -95,8 +102,3 @@ function routeToFilePath(route, outDir) {
 
 	return path.join(current, "index.html");
 }
-
-module.exports = {
-	installHooks,
-	build,
-};

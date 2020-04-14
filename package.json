@@ -4,7 +4,7 @@
   "description": "trying parcel",
   "scripts": {
     "dev": "parcel src/index.html",
-    "build": "node build.js"
+    "build": "parcel build build.js --out-dir .gwee/server --target node && node .gwee/server/build.js"
   },
   "author": "",
   "license": "MIT",
