@@ -14,7 +14,7 @@
     "@babel/preset-react": "^7.9.4",
     "jsdom": "^16.2.2",
     "parcel-bundler": "^1.12.4",
-    "postcss-modules": "^1.5.0",
+    "postcss-modules": "^2.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
