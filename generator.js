@@ -19,16 +19,21 @@ function main() {
 	build({
 		entry: "src/index.html",
 		outDir: "dist",
-		renderPage: (template, route, addRoute) => {
-			// renderPage is expected to render the passed in route and render
-			// it to a string containing HTML.
-			//
-			// We can do that however we want. Here we use React.
-			//
-			// `template` is given to us as an HTML string that has been
-			// processed by Parcel. It'll be the contents of `src/index.html`,
-			// but with CSS and JS references injected into it.
 
+		// A list of the initial pages that should be built. The code as-written
+		// will crawl links to discover any pages linked from these initial
+		// routes, as well.
+		initialRoutes: ["/"],
+
+		// renderPage is expected to render the passed in route and render it to
+		// a string containing HTML.
+		//
+		// We can do that however we want. Here we use React.
+		//
+		// `template` is given to us as an HTML string that has been processed
+		// by Parcel. It'll be the contents of `src/index.html`, but with CSS
+		// and JS references injected into it.
+		renderPage: (template, route, addRoute) => {
 			const dom = new JSDOM(template);
 			const main = dom.window.document.querySelector("#app");
 			const content = ReactDOMServer.renderToString(
@@ -60,7 +65,7 @@ function main() {
 
 // Build the given Parcel entrypoint. Individual pages are rendered using the
 // `renderPage` callback, which should return HTML strings.
-async function build({ entry, outDir, renderPage }) {
+async function build({ entry, outDir, initialRoutes, renderPage }) {
 	await rimrafPromise(outDir);
 	await fs.mkdir(outDir, { recursive: true });
 
@@ -75,10 +80,8 @@ async function build({ entry, outDir, renderPage }) {
 	// This should be `entry`, but processed by Parcel.
 	const template = await fs.readFile(path.join(outDir, path.basename(entry)));
 
-	const visitedRoutes = new Set();
-	visitedRoutes.add("/");
-
-	const routesToVisit = ["/"];
+	const visitedRoutes = new Set(initialRoutes);
+	const routesToVisit = initialRoutes;
 
 	const addRoute = route => {
 		if (!visitedRoutes.has(route)) {
