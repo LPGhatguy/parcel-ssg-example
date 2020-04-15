@@ -10,8 +10,9 @@ import rimraf from "rimraf";
 
 import React from "react";
 import ReactDOMServer from "react-dom/server";
+import { Helmet } from "react-helmet";
 import { JSDOM } from "jsdom";
-import { MemoryRouter as Router } from "react-router-dom";
+import { StaticRouter as Router } from "react-router-dom";
 
 import App from "./src/App";
 
@@ -34,14 +35,27 @@ function main() {
 		// by Parcel. It'll be the contents of `src/index.html`, but with CSS
 		// and JS references injected into it.
 		renderPage: (template, route, addRoute) => {
-			const dom = new JSDOM(template);
-			const main = dom.window.document.querySelector("#app");
+			const context = {};
+
 			const content = ReactDOMServer.renderToString(
-				<Router>
+				<Router location={ route } context={ context }>
 					<App />
 				</Router>
 			);
+			const helmet = Helmet.renderStatic();
+
+			if (context.url != null) {
+				console.log("Redirect: ", context.url);
+			}
+
+			const dom = new JSDOM(template);
+
+			const main = dom.window.document.querySelector("#app");
 			main.innerHTML = content;
+
+			const extraHead = helmet.meta.toString() + helmet.title.toString();
+			const head = dom.window.document.querySelector("head");
+			head.insertAdjacentHTML("afterbegin", extraHead);
 
 			// To add new pages, we can invoke `addRoute` with a site-relative
 			// path.

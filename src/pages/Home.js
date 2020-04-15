@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
 import PageBody from "../PageBody";
 
@@ -24,6 +24,7 @@ export default function Home() {
 	return (
 		<React.Fragment>
 			<Splash />
+
 			<PageBody>
 				<div className={ style.SpinningThing }>Amazing!</div>
 			</PageBody>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import Header from "./Header";
 import Footer from "./Footer";
@@ -11,6 +12,14 @@ import NotFound from "./pages/NotFound";
 export default function App() {
 	return (
 		<React.Fragment>
+			<Helmet
+				titleTemplate="%s | Parcel SSG Example"
+				defaultTitle="Parcel SSG Example"
+			>
+				<meta charset="utf-8" />
+				<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+			</Helmet>
+
 			<Header />
 
 			<Switch>
@@ -18,7 +27,7 @@ export default function App() {
 					<Home />
 				</Route>
 
-				<Route exact path="/about">
+				<Route exact path="/about/">
 					<About />
 				</Route>
 

@@ -1,4 +1,5 @@
-# Output directory
+# Output directories
+/dev
 /dist
 
 # Stuff used by the generator tool

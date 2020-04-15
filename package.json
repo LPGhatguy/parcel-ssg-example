@@ -6,7 +6,7 @@
   "author": "Lucien Greathouse <me@lpghatguy.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "parcel src/index.html",
+    "dev": "parcel --out-dir dev src/index.html",
     "build": "node build.js"
   },
   "devDependencies": {
@@ -17,6 +17,7 @@
     "postcss-modules": "^2.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-helmet": "^6.0.0",
     "react-router-dom": "^5.1.2",
     "rimraf": "^3.0.2"
   }
