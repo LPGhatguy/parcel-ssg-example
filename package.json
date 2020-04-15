@@ -1,26 +1,23 @@
 {
-  "name": "try-parcel",
+  "name": "parcel-ssg-example",
   "version": "1.0.0",
-  "description": "trying parcel",
+  "description": "Example of generating a truly static website with Parcel and React.",
+  "publish": false,
+  "author": "Lucien Greathouse <me@lpghatguy.com>",
+  "license": "MIT",
   "scripts": {
     "dev": "parcel src/index.html",
-    "build": "parcel build build.js --out-dir .gwee/server --target node && node .gwee/server/build.js"
+    "build": "node build.js"
   },
-  "author": "",
-  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.8.3",
     "@babel/preset-react": "^7.8.3",
     "jsdom": "^15.2.1",
-    "mkdirp": "^0.5.1",
-    "node-hook": "^1.0.0",
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^1.5.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
     "rimraf": "^3.0.1"
-  },
-  "dependencies": {
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
   }
 }
