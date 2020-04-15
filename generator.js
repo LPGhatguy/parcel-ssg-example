@@ -48,7 +48,7 @@ function main() {
 			const context = {};
 
 			const content = ReactDOMServer.renderToString(
-				<Router location={ route } context={ context }>
+				<Router location={ route } context={ context } basename={ process.env.PARCEL_PUBLIC_URL }>
 					<App />
 				</Router>
 			);

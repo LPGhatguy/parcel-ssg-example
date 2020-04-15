@@ -8,7 +8,7 @@ import App from "./App";
 const main = document.querySelector("#app");
 
 const app = (
-	<Router>
+	<Router basename={ process.env.PARCEL_PUBLIC_URL }>
 		<App />
 	</Router>
 );
