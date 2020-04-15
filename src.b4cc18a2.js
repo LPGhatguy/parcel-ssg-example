@@ -68,7 +68,7 @@ var e=arguments[3];Object.defineProperty(exports,"__esModule",{value:!0}),export
 },{"prop-types":"D9Od","react-side-effect":"thqn","react-fast-compare":"e5DK","react":"n8MK","object-assign":"J4Nk"}],"HyPK":[function(require,module,exports) {
 module.exports={Header:"_Header_c2ed1",HeaderInner:"_HeaderInner_c2ed1",Logo:"_Logo_c2ed1",Nav:"_Nav_c2ed1",ActiveNavLink:"_ActiveNavLink_c2ed1"};
 },{}],"G7h9":[function(require,module,exports) {
-module.exports="/logo.dca0f317.png";
+module.exports="/parcel-ssg-example/logo.dca0f317.png";
 },{}],"iNXs":[function(require,module,exports) {
 "use strict";Object.defineProperty(exports,"__esModule",{value:!0}),exports.default=u;var e=l(require("react")),t=require("react-router-dom"),a=l(require("./Header.css")),r=l(require("./logo.png"));function l(e){return e&&e.__esModule?e:{default:e}}function u(){return e.default.createElement("header",{className:a.default.Header},e.default.createElement("div",{className:a.default.HeaderInner},e.default.createElement(t.Link,{to:"/"},e.default.createElement("img",{className:a.default.Logo,src:r.default})),e.default.createElement("nav",{className:a.default.Nav},e.default.createElement(t.NavLink,{activeClassName:a.default.ActiveNavLink,exact:!0,to:"/"},"Home"),e.default.createElement(t.NavLink,{activeClassName:a.default.ActiveNavLink,to:"/about/"},"About"),e.default.createElement(t.NavLink,{activeClassName:a.default.ActiveNavLink,to:"/redirect-home/"},"Redirect Home"))))}
 },{"react":"n8MK","react-router-dom":"uc19","./Header.css":"HyPK","./logo.png":"G7h9"}],"H20z":[function(require,module,exports) {
@@ -94,4 +94,4 @@ module.exports={Splash:"_Splash_b33cd",SplashInner:"_SplashInner_b33cd",SplashTi
 },{"react":"n8MK","react-router-dom":"uc19","react-helmet":"d59q","./Header":"iNXs","./Footer":"C1Hh","./pages/Home":"kkxj","./pages/About":"vrWX","./pages/RedirectHome":"NwM6","./pages/NotFound":"ShR1"}],"Focm":[function(require,module,exports) {
 "use strict";var e=a(require("react")),r=a(require("react-dom")),t=require("react-router-dom");require("./index.css");var u=a(require("./App"));function a(e){return e&&e.__esModule?e:{default:e}}var d=document.querySelector("#app"),l=e.default.createElement(t.BrowserRouter,null,e.default.createElement(u.default,null));d.hasChildNodes()?r.default.hydrate(l,d):r.default.render(l,d);
 },{"react":"n8MK","react-dom":"NKHc","react-router-dom":"uc19","./index.css":"vKFU","./App":"lY9v"}]},{},["Focm"], null)
-//# sourceMappingURL=/src.b4cc18a2.js.map
+//# sourceMappingURL=/parcel-ssg-example/src.b4cc18a2.js.map
