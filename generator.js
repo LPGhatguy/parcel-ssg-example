@@ -54,10 +54,6 @@ function main() {
 			);
 			const helmet = Helmet.renderStatic();
 
-			if (context.url != null) {
-				console.log("Redirect: ", context.url);
-			}
-
 			const dom = new JSDOM(template);
 
 			const main = dom.window.document.querySelector("#app");
@@ -66,6 +62,16 @@ function main() {
 			const extraHead = helmet.meta.toString() + helmet.title.toString();
 			const head = dom.window.document.querySelector("head");
 			head.insertAdjacentHTML("afterbegin", extraHead);
+
+			if (context.url != null) {
+				const redirect = dom.window.document.createElement("meta");
+				redirect.setAttribute("http-equiv", "refresh");
+				redirect.setAttribute("content", `0; URL='${ context.url }'`);
+
+				head.appendChild(redirect);
+
+				console.log("...redirects to", context.url);
+			}
 
 			// To add new pages, we can invoke `addRoute` with a site-relative
 			// path.

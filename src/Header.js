@@ -14,7 +14,8 @@ export default function Header() {
 
 				<nav className={ style.Nav }>
 					<NavLink activeClassName={ style.ActiveNavLink } exact to="/">Home</NavLink>
-					<NavLink activeClassName={ style.ActiveNavLink } to="/about">About</NavLink>
+					<NavLink activeClassName={ style.ActiveNavLink } to="/about/">About</NavLink>
+					<NavLink activeClassName={ style.ActiveNavLink } to="/redirect-home/">Redirect Home</NavLink>
 				</nav>
 			</div>
 		</header>
