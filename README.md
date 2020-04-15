@@ -3,6 +3,8 @@ An example of using Parcel to create a true statically rendered website.
 
 This example uses React, but it's easy to adapt this same idea to any other UI library.
 
+The generator code, [`generator.js`](generator.js) is intended to be simple and starightforward to adapt to your own projects.
+
 ## Key Features
 * Generates HTML that does not require JS to function.
 * Supports live-reloading with Parcel during development.
