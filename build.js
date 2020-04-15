@@ -7,8 +7,11 @@ const Parcel = require("parcel-bundler");
 
 process.env.NODE_ENV = "production";
 
+const publicUrl = process.env.PARCEL_PUBLIC_URL || "/";
+
 const bundler = new Parcel(["generator.js"], {
 	outDir: ".cache/generator",
+	publicUrl,
 	target: "node",
 	watch: false,
 	minify: true,

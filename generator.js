@@ -99,7 +99,10 @@ async function build({ entry, outDir, initialRoutes, renderPage }) {
 	await rimrafPromise(outDir);
 	await fs.mkdir(outDir, { recursive: true });
 
+	const publicUrl = process.env.PARCEL_PUBLIC_URL || "/";
+
 	const bundler = new Parcel([entry], {
+		publicUrl,
 		watch: false,
 		minify: true,
 		autoInstall: false,

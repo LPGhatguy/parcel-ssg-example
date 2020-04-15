@@ -17,6 +17,8 @@ jobs:
         run: |
           npm install
           npm run build
+        env:
+          PARCEL_PUBLIC_URL: "/parcel-ssg-example"
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
