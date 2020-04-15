@@ -24,7 +24,17 @@ function main() {
 		// A list of the initial pages that should be built. The code as-written
 		// will crawl links to discover any pages linked from these initial
 		// routes, as well.
-		initialRoutes: ["/"],
+		initialRoutes: [
+			"/",
+
+			// We can pass an object to override the output path of this route,
+			// like if our static content host has specific requirements on 404
+			// pages.
+			{
+				route: "/404",
+				outputPath: "/404.html",
+			},
+		],
 
 		// renderPage is expected to render the passed in route and render it to
 		// a string containing HTML.
@@ -105,21 +115,31 @@ async function build({ entry, outDir, initialRoutes, renderPage }) {
 	};
 
 	while (true) {
-		const route = routesToVisit.pop();
+		let route = routesToVisit.pop();
 
 		if (route == null) {
 			break;
 		}
 
+		let outputPath;
+
+		if (typeof route == "string") {
+			outputPath = routeToFilePath(route);
+		} else {
+			outputPath = route.outputPath;
+			route = route.route;
+		}
+
+		outputPath = path.join(outDir, outputPath);
+
 		console.log(`Generating route ${ route }`);
 
 		const rendered = renderPage(template, route, addRoute);
-		const out = routeToFilePath(route, outDir);
 
-		console.log(`Saving to ${ out }`);
+		console.log(`Saving to ${ outputPath }`);
 
-		await fs.mkdir(path.dirname(out), { recursive: true });
-		await fs.writeFile(out, rendered);
+		await fs.mkdir(path.dirname(outputPath), { recursive: true });
+		await fs.writeFile(outputPath, rendered);
 	}
 }
 
@@ -137,8 +157,8 @@ function rimrafPromise(dir) {
 }
 
 // Transforms a site-relative route for a page into a file path.
-function routeToFilePath(route, outDir) {
-	let current = outDir;
+function routeToFilePath(route) {
+	let current = "";
 
 	for (const piece of route.split("/")) {
 		if (piece.length === 0) {
