@@ -1,0 +1,40 @@
+.Splash {
+	background-color: #444;
+	color: #eee;
+}
+
+.SplashInner {
+	max-width: 40rem;
+	margin: 0 auto;
+
+	padding: 3rem 0;
+}
+
+.SplashTitle {
+	font-size: 3rem;
+	text-align: center;
+	margin-bottom: 1rem;
+	color: #d00;
+}
+
+.SplashSubtitle {
+	font-size: 1.8rem;
+	text-align: center;
+}
+
+@keyframes spin {
+	from {
+		transform: none;
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.SpinningThing {
+	animation: spin 1s infinite linear;
+	text-align: center;
+	padding: 8rem 2rem;
+	font-size: 3rem;
+}

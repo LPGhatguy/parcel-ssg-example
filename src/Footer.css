@@ -1,0 +1,11 @@
+.Footer {
+	flex: 0 0;
+	background-color: #333;
+	color: #eee;
+}
+
+.FooterInner {
+	max-width: 60rem;
+	margin: 0 auto;
+	padding: 3rem 0;
+}
