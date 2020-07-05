@@ -16,6 +16,8 @@ import { StaticRouter as Router } from "react-router-dom";
 
 import App from "./src/App";
 
+const BASE_URL = process.env.PARCEL_PUBLIC_URL;
+
 function main() {
 	build({
 		entry: "src/index.html",
@@ -53,7 +55,7 @@ function renderPage(template, route, addRoute) {
 	const context = {};
 
 	const content = ReactDOMServer.renderToString(
-		<Router location={ route } context={ context } basename={ process.env.PARCEL_PUBLIC_URL }>
+		<Router location={ route } context={ context } basename={ BASE_URL }>
 			<App />
 		</Router>
 	);
@@ -85,12 +87,18 @@ function renderPage(template, route, addRoute) {
 	// link.
 	const links = dom.window.document.querySelectorAll("a");
 	for (const link of links) {
+		let url = link.href;
+
 		// Rough pattern to ignore off-site links
-		if (/^\w+:\/\//.test(link.href)) {
+		if (/^\w+:\/\//.test(url)) {
 			continue;
 		}
 
-		addRoute(link.href);
+		if (url.startsWith(BASE_URL)) {
+			url = url.slice(BASE_URL.length);
+		}
+
+		addRoute(url);
 	}
 
 	return dom.serialize();
