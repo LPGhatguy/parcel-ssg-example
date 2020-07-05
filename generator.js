@@ -36,61 +36,64 @@ function main() {
 			},
 		],
 
-		// renderPage is expected to render the passed in route and render it to
-		// a string containing HTML.
-		//
-		// We can do that however we want. Here we use React.
-		//
-		// `template` is given to us as an HTML string that has been processed
-		// by Parcel. It'll be the contents of `src/index.html`, but with CSS
-		// and JS references injected into it.
-		renderPage: (template, route, addRoute) => {
-			const context = {};
-
-			const content = ReactDOMServer.renderToString(
-				<Router location={ route } context={ context } basename={ process.env.PARCEL_PUBLIC_URL }>
-					<App />
-				</Router>
-			);
-			const helmet = Helmet.renderStatic();
-
-			const dom = new JSDOM(template);
-
-			const main = dom.window.document.querySelector("#app");
-			main.innerHTML = content;
-
-			const extraHead = helmet.meta.toString() + helmet.title.toString();
-			const head = dom.window.document.querySelector("head");
-			head.insertAdjacentHTML("afterbegin", extraHead);
-
-			if (context.url != null) {
-				const redirect = dom.window.document.createElement("meta");
-				redirect.setAttribute("http-equiv", "refresh");
-				redirect.setAttribute("content", `0; URL='${ context.url }'`);
-
-				head.appendChild(redirect);
-
-				console.log("...redirects to", context.url);
-			}
-
-			// To add new pages, we can invoke `addRoute` with a site-relative
-			// path.
-			//
-			// Here, we're just crawling the page for anything that looks like a
-			// link.
-			const links = dom.window.document.querySelectorAll("a");
-			for (const link of links) {
-				// Rough pattern to ignore off-site links
-				if (/^\w+:\/\//.test(route)) {
-					continue;
-				}
-
-				addRoute(link.href);
-			}
-
-			return dom.serialize();
-		},
+		// Each page will be rendered by this function, defined below.
+		renderPage,
 	});
+}
+
+// renderPage is expected to render the passed in route and render it to
+// a string containing HTML.
+//
+// We can do that however we want. Here we use React.
+//
+// `template` is given to us as an HTML string that has been processed
+// by Parcel. It'll be the contents of `src/index.html`, but with CSS
+// and JS references injected into it.
+function renderPage(template, route, addRoute) {
+	const context = {};
+
+	const content = ReactDOMServer.renderToString(
+		<Router location={ route } context={ context } basename={ process.env.PARCEL_PUBLIC_URL }>
+			<App />
+		</Router>
+	);
+	const helmet = Helmet.renderStatic();
+
+	const dom = new JSDOM(template);
+
+	const main = dom.window.document.querySelector("#app");
+	main.innerHTML = content;
+
+	const extraHead = helmet.meta.toString() + helmet.title.toString();
+	const head = dom.window.document.querySelector("head");
+	head.insertAdjacentHTML("afterbegin", extraHead);
+
+	if (context.url != null) {
+		const redirect = dom.window.document.createElement("meta");
+		redirect.setAttribute("http-equiv", "refresh");
+		redirect.setAttribute("content", `0; URL='${ context.url }'`);
+
+		head.appendChild(redirect);
+
+		console.log("...redirects to", context.url);
+	}
+
+	// To add new pages, we can invoke `addRoute` with a site-relative
+	// path.
+	//
+	// Here, we're just crawling the page for anything that looks like a
+	// link.
+	const links = dom.window.document.querySelectorAll("a");
+	for (const link of links) {
+		// Rough pattern to ignore off-site links
+		if (/^\w+:\/\//.test(link.href)) {
+			continue;
+		}
+
+		addRoute(link.href);
+	}
+
+	return dom.serialize();
 }
 
 // Build the given Parcel entrypoint. Individual pages are rendered using the
