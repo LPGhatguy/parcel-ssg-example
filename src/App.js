@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
+import MDXComponents from "./MDXComponents";
 import Header from "./Header";
 import Footer from "./Footer";
 
@@ -12,7 +13,7 @@ import NotFound from "./pages/NotFound";
 
 export default function App() {
 	return (
-		<React.Fragment>
+		<MDXComponents>
 			<Helmet
 				titleTemplate="%s | Parcel SSG Example"
 				defaultTitle="Parcel SSG Example"
@@ -42,6 +43,6 @@ export default function App() {
 			</Switch>
 
 			<Footer />
-		</React.Fragment>
+		</MDXComponents>
 	);
 }

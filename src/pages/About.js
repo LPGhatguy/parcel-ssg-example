@@ -2,6 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 
 import PageBody from "../PageBody";
+import AboutContent from "../AboutContent.mdx";
 
 export default function About() {
 	return (
@@ -10,7 +11,7 @@ export default function About() {
 				<title>About</title>
 			</Helmet>
 
-			<h1>About</h1>
+			<AboutContent />
 		</PageBody>
 	);
 }
