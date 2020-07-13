@@ -11,6 +11,12 @@ The generator code, [`generator.js`](generator.js) is intended to be simple and 
 * Dynamically generates set of pages by crawling rendered links.
 
 ## Usage
+Install dependencies:
+
+```bash
+npm install
+```
+
 To run in development mode:
 
 ```bash
