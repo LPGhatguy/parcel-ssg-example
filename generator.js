@@ -16,6 +16,12 @@ import { StaticRouter as Router } from "react-router-dom";
 
 import App from "./src/App";
 
+// Enables GitHub Pages specific configuration: CNAME and .nojekyll files.
+const IS_GITHUB_PAGES = true;
+
+// Set to a domain name to have the generator automatically configure a domain.
+const CNAME = null;
+
 const BASE_URL = process.env.PARCEL_PUBLIC_URL;
 
 function main() {
@@ -153,13 +159,23 @@ async function build({ entry, outDir, initialRoutes, renderPage }) {
 		outputPath = path.join(outDir, outputPath);
 
 		console.log(`Generating route ${ route }`);
-
 		const rendered = renderPage(template, route, addRoute);
 
 		console.log(`Saving to ${ outputPath }`);
-
 		await fs.mkdir(path.dirname(outputPath), { recursive: true });
 		await fs.writeFile(outputPath, rendered);
+	}
+
+	if (IS_GITHUB_PAGES) {
+		if (CNAME != null) {
+			console.log("Writing CNAME file for GitHub Pages");
+			const cnamePath = path.join(outDir, "CNAME");
+			await fs.writeFile(cnamePath, CNAME);
+		}
+
+		console.log("Writing .nojekyll file for GitHub Pages");
+		const noJekyllPath = path.join(outDir, ".nojekyll");
+		await fs.writeFile(noJekyllPath, "");
 	}
 }
 
