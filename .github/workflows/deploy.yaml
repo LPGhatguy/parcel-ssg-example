@@ -21,7 +21,7 @@ jobs:
           PARCEL_PUBLIC_URL: "/parcel-ssg-example"
 
       - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@releases/v3-cname
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
           BRANCH: gh-pages
